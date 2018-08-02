@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="e_mail">E-mail</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="login_failed">Login Failed</string>
+    <string name="enter_email">Please enter your email</string>
+    <string name="enter_password">Please enter your password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="full_name">Full Name</string>
+    <string name="enter_full_name">Please enter your full name</string>
+    <string name="confirm_your_password">Pleas confirm your password</string>
+    <string name="password_mismatch">Password mismatch</string>
+    <string name="enter_you_phone_number">Pleas enter your phone number</string>
+    <string name="weak_password">Password is weak, please enter a strong password</string>
+    <string name="invalid_credential">Invalid credential</string>
+    <string name="user_exists">User already exists please enter another email</string>
+    <string name="add_service">Add Service</string>
+    <string name="service_name_en">Service Name (En)</string>
+    <string name="service_name_ar">Service Name (Ar)</string>
+    <string name="invalid_qr_code">Invalid QR Code</string>
+    <string name="request_added">Your request has been added</string>
+    <string name="my_requests">My Requests</string>
+</resources>
