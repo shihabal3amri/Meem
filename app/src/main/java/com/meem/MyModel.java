@@ -20,6 +20,15 @@ public class MyModel implements Parcelable{
     private Boolean isAccepted;
     private String date;
     private String time;
+    private  Integer statusCode;
+
+    public Integer getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(Integer statusCode) {
+        this.statusCode = statusCode;
+    }
 
     public String getDate() {
         return date;

@@ -14,6 +14,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.Result;
 
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class BarcodeScannerActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler{
@@ -78,14 +82,26 @@ public class BarcodeScannerActivity extends AppCompatActivity implements ZXingSc
                         mm.setUserId(user.getUid());
                         mm.setEmail(email);
                         mm.setName(name);
+                        mm.setStatusCode(0);
+                        Locale arabicLocale = new Locale("ar");
+                        DateFormat dfDate = DateFormat.getDateInstance(DateFormat.FULL, arabicLocale);
+                        DateFormat dfTime = DateFormat.getTimeInstance(DateFormat.MEDIUM, arabicLocale);
                         MyModel mLang = new MyModel();
+                        mLang.setServiceName(serviceNameAr);
+                        mLang.setAreaName(myModel.getAr().getAreaName());
+                        mLang.setDate(dfDate.format(new Date()));
+                        mLang.setTime(dfTime.format(new Date()));
+                        mm.setAr(mLang);
+
+                        mLang = new MyModel();
+                        dfDate = DateFormat.getDateInstance(DateFormat.FULL, Locale.ENGLISH);
+                        dfTime = DateFormat.getTimeInstance(DateFormat.MEDIUM, Locale.ENGLISH);
+                        mLang.setDate(dfDate.format(new Date()));
+                        mLang.setTime(dfTime.format(new Date()));
                         mLang.setServiceName(serviceNameEn);
                         mLang.setAreaName(myModel.getEn().getAreaName());
                         mm.setEn(mLang);
-                        mLang = new MyModel();
-                        mLang.setServiceName(serviceNameAr);
-                        mLang.setAreaName(myModel.getAr().getAreaName());
-                        mm.setAr(mLang);
+
                         String key = myRef.push().getKey();
                         myRef.child(key).setValue(mm);
                         Toast.makeText(BarcodeScannerActivity.this, R.string.request_added,Toast.LENGTH_LONG).show();

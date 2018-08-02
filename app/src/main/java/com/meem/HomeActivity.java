@@ -1,5 +1,6 @@
 package com.meem;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,8 +14,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -34,7 +41,23 @@ public class HomeActivity extends AppCompatActivity
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View v = navigationView.getHeaderView(0);
+        final TextView tvName = v.findViewById(R.id.tvName);
+        final TextView tvEmail = v.findViewById(R.id.tvEmail);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                MyModel myModel = dataSnapshot.getValue(MyModel.class);
+                tvEmail.setText(myModel.getEmail());
+                tvName.setText(myModel.getName());
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         ft = getSupportFragmentManager().beginTransaction();
         ft.add(R.id.fl, new ServicesFragment(), "SF");
         //navigationView.setCheckedItem(R.id.nav_home);
@@ -54,7 +77,6 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.home, menu);
         return true;
     }
 
@@ -63,12 +85,6 @@ public class HomeActivity extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -82,13 +98,14 @@ public class HomeActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             // Handle the camera action
             ft = getSupportFragmentManager().beginTransaction();
-            ft.add(R.id.fl, new MyRequestsFragment(), "RF");
+            ft.replace(R.id.fl, new MyRequestsFragment(), "RF");
             //navigationView.setCheckedItem(R.id.nav_home);
             ft.commit();
         } else if (id == R.id.nav_gallery) {
             FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+            finish();
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

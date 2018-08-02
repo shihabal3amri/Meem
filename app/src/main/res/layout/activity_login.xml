@@ -11,7 +11,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="24dp"
         android:layout_above="@+id/cv"
-        android:src="@drawable/icon_new"/>
+        android:src="@drawable/ic_new_logo_trans"/>
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

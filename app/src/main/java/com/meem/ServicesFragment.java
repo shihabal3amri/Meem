@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -37,6 +38,7 @@ public class ServicesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         currentLang = Resources.getSystem().getConfiguration().locale.getLanguage();
         View v = inflater.inflate(R.layout.fragment_services, null);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.services);
         arrayList = new ArrayList<MyModel>();
         myAdapter = new MyAdapter();
         rv = (ListView) v.findViewById(R.id.rv);
