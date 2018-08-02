@@ -81,6 +81,10 @@ public class HomeActivity extends AppCompatActivity
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
+            ft = getSupportFragmentManager().beginTransaction();
+            ft.add(R.id.fl, new MyRequestsFragment(), "RF");
+            //navigationView.setCheckedItem(R.id.nav_home);
+            ft.commit();
         } else if (id == R.id.nav_gallery) {
             FirebaseAuth.getInstance().signOut();
         }
