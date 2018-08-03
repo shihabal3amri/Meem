@@ -1,5 +1,6 @@
 package com.meem;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.chootdev.recycleclick.RecycleClick;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -24,24 +26,25 @@ import java.util.ArrayList;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
-public class MyRequestsFragment extends Fragment {
-    private String currentLang;
+public class VolunteerAcceptedRequestsFragment extends Fragment {
     private ArrayList<MyModel> arrayList;
     private MyAdapter adapter;
-
+    private String currentLang;
+    private FirebaseUser user;
+    private String name;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         currentLang = Resources.getSystem().getConfiguration().locale.getLanguage();
         View v = inflater.inflate(R.layout.fragment_my_requests, null);
         final RecyclerView rv = (RecyclerView) v.findViewById(R.id.rv);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.my_requests);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.accepted_requests);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(layoutManager);
         arrayList = new ArrayList<MyModel>();
         adapter = new MyAdapter();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        FirebaseDatabase.getInstance().getReference().child("Requests").orderByChild("userId").equalTo(user.getUid()).addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("AcceptedRequests").orderByChild("acceptedById").equalTo(user.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 arrayList.clear();
@@ -59,6 +62,16 @@ public class MyRequestsFragment extends Fragment {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+        RecycleClick.addTo(rv).setOnItemClickListener(new RecycleClick.OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                MyModel myModel = arrayList.get(position);
+                Intent intent = new Intent(getActivity(), VolunteerFinderActivity.class);
+                intent.putExtra("color", myModel.getColor());
+                intent.putExtra("count", myModel.getCount());
+                startActivity(intent);
             }
         });
         return v;
@@ -87,7 +100,7 @@ public class MyRequestsFragment extends Fragment {
         @Override
         public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
-            View v = inflater.inflate(R.layout.custom_status_list, parent, false);
+            View v = inflater.inflate(R.layout.custom_list_accepted, parent, false);
             return new MyHolder(v);
         }
 
@@ -113,11 +126,6 @@ public class MyRequestsFragment extends Fragment {
                     holder.tvArea.setText(getString(R.string.area)+" "+myModel.getEn().getAreaName());
                     holder.tvService.setText(getString(R.string.service)+" "+myModel.getEn().getServiceName());
                     break;
-            }
-            if(myModel.getAccepted()) {
-                holder.tvStatus.setText(R.string.accepted);
-            } else {
-                holder.tvStatus.setText(getString(R.string.pending));
             }
 
         }

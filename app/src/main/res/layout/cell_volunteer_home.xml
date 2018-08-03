@@ -114,6 +114,7 @@
                 android:text="@string/accept"
                 android:layout_marginEnd="5dp"
                 android:layout_marginStart="5dp"
+                android:id="@+id/btnAccept"
                 android:textColor="@color/colorPrimaryDark"
                 android:background="@android:color/transparent"/>
             <Button
@@ -123,6 +124,7 @@
                 android:layout_marginEnd="5dp"
                 android:layout_height="wrap_content"
                 android:text="@string/view_details"
+                android:id="@+id/btnViewDetails"
                 android:textColor="@color/colorPrimaryDark"
                 android:background="@android:color/transparent"/>
         </LinearLayout>

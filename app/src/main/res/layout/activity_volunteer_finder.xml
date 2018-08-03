@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_meem"
-    tools:context=".MainActivity">
-<ImageView
-    android:layout_width="@dimen/_200sdp"
-    android:layout_height="@dimen/_200sdp"
-    android:layout_centerInParent="true"
-    android:src="@drawable/ic_new_logo_trans"/>
+    android:id="@+id/rl"
+    tools:context=".VolunteerFinderActivity">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvNumber"
+        android:layout_centerInParent="true"
+        android:textSize="50sp"/>
 </RelativeLayout>

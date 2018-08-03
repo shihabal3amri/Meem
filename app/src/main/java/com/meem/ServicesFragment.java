@@ -97,7 +97,17 @@ public class ServicesFragment extends Fragment {
             View v = inflater.inflate(android.R.layout.simple_list_item_1, null);
             TextView tvService = (TextView) v.findViewById(android.R.id.text1);
             MyModel myModel = arrayList.get(i);
-            tvService.setText(myModel.getEn().getServiceName());
+            switch (currentLang) {
+                case "en":
+                    tvService.setText(myModel.getEn().getServiceName());
+                    break;
+                case "ar":
+                    tvService.setText(myModel.getAr().getServiceName());
+                    break;
+                default:
+                    tvService.setText(myModel.getEn().getServiceName());
+                    break;
+            }
             return v;
         }
     }

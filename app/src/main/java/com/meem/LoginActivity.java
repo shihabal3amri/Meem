@@ -1,5 +1,6 @@
 package com.meem;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -19,6 +20,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -45,6 +51,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login(View view) {
+        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+        progressDialog.setMessage(getString(R.string.logging_in));
+        progressDialog.show();
         boolean flag = true;
         if(etEmail.getText().toString().isEmpty()) {
             flag = false;
@@ -59,9 +68,29 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-                        finish();
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid()).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                MyModel myModel = dataSnapshot.getValue(MyModel.class);
+                                if(myModel.getUserType().equals("user")) {
+                                    startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                                    finish();
+                                } else {
+                                    startActivity(new Intent(LoginActivity.this, VolunteerActivity.class));
+                                    finish();
+                                }
+                                progressDialog.dismiss();
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                progressDialog.dismiss();
+                            }
+                        });
+
                     } else {
+                        progressDialog.dismiss();
                         try {
                             throw task.getException();
                         } catch(FirebaseAuthInvalidCredentialsException e) {
@@ -72,6 +101,8 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }
             });
+        } else {
+            progressDialog.dismiss();
         }
     }
 }

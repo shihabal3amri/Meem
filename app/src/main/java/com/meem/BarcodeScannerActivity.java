@@ -103,6 +103,7 @@ public class BarcodeScannerActivity extends AppCompatActivity implements ZXingSc
                         mm.setEn(mLang);
 
                         String key = myRef.push().getKey();
+                        mm.setRequestId(key);
                         myRef.child(key).setValue(mm);
                         Toast.makeText(BarcodeScannerActivity.this, R.string.request_added,Toast.LENGTH_LONG).show();
                         break forLoop;

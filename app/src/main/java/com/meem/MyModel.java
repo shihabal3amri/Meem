@@ -21,6 +21,42 @@ public class MyModel implements Parcelable{
     private String date;
     private String time;
     private  Integer statusCode;
+    private Integer count;
+    private String color;
+    private String acceptedById;
+    private String acceptedByName;
+
+    public String getAcceptedByName() {
+        return acceptedByName;
+    }
+
+    public void setAcceptedByName(String acceptedByName) {
+        this.acceptedByName = acceptedByName;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getAcceptedById() {
+        return acceptedById;
+    }
+
+    public void setAcceptedById(String acceptedById) {
+        this.acceptedById = acceptedById;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
+    }
 
     public Integer getStatusCode() {
         return statusCode;

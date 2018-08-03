@@ -5,13 +5,9 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_services"
-            android:icon="@drawable/ic_notifications_black_24dp"
-            android:title="@string/services"/>
-        <item
             android:id="@+id/nav_camera"
             android:icon="@drawable/ic_bookmark_border_black_24dp"
-            android:title="@string/my_requests" />
+            android:title="@string/requests" />
         <item
             android:id="@+id/nav_accepted"
             android:icon="@drawable/ic_bookmark_black_24dp"
@@ -20,7 +16,5 @@
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_power_settings_new_black_24dp"
             android:title="@string/logout" />
-
     </group>
-
 </menu>

@@ -23,7 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class HomeActivity extends AppCompatActivity
+public class VolunteerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private FragmentTransaction ft;
@@ -31,14 +31,16 @@ public class HomeActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_volunteer);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View v = navigationView.getHeaderView(0);
@@ -59,7 +61,7 @@ public class HomeActivity extends AppCompatActivity
             }
         });
         ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.fl, new ServicesFragment(), "SF");
+        ft.add(R.id.fl, new VolunteerRequestsFragment(), "VRF");
         //navigationView.setCheckedItem(R.id.nav_home);
         ft.commit();
     }
@@ -85,7 +87,6 @@ public class HomeActivity extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -97,21 +98,18 @@ public class HomeActivity extends AppCompatActivity
 
         if (id == R.id.nav_camera) {
             ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.fl, new MyRequestsFragment(), "RF");
+            ft.replace(R.id.fl, new VolunteerRequestsFragment(), "VRF");
             ft.commit();
-        }else if (id == R.id.nav_services) {
+        } else  if(id == R.id.nav_accepted){
             ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.fl, new ServicesFragment(), "SF");
-            ft.commit();
-        } else if (id == R.id.nav_accepted) {
-            ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.fl, new UserAcceptedRequestsFragment(), "UARF");
+            ft.replace(R.id.fl, new VolunteerAcceptedRequestsFragment(), "VARF");
             ft.commit();
         } else if (id == R.id.nav_gallery) {
             FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+            startActivity(new Intent(VolunteerActivity.this, LoginActivity.class));
             finish();
         }
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
