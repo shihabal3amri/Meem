@@ -23,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
@@ -52,6 +53,7 @@ public class VolunteerAcceptedRequestsFragment extends Fragment {
                     MyModel myModel = postSnapshot.getValue(MyModel.class);
                     arrayList.add(myModel);
                 }
+                Collections.reverse(arrayList);
                 if(rv.getAdapter() == null) {
                     rv.setAdapter(new MyAdapter());
                 } else {

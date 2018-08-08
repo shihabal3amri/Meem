@@ -26,6 +26,7 @@ import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -71,6 +72,7 @@ public class VolunteerRequestsFragment extends Fragment {
                     MyModel myModel = postSnapshot.getValue(MyModel.class);
                     arrayList.add(myModel);
                 }
+                Collections.reverse(arrayList);
                 if(rv.getAdapter() == null) {
                     rv.setAdapter(new MyAdapter());
                 } else {
@@ -160,14 +162,15 @@ public class VolunteerRequestsFragment extends Fragment {
                                 Integer count = dataSnapshot.getValue(Integer.class);
                                 Map map = new HashMap();
                                 map.put("Requests/"+myModel.getRequestId()+"/accepted", true);
-                                map.put("Requests/"+myModel.getRequestId()+"/count", count);
+                                //map.put("Requests/"+myModel.getRequestId()+"/count", count);
                                 Random rnd = new Random();
                                 int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
                                 String colorHex = String.format("#%06X", (0xFFFFFF & color));
-                                map.put("Requests/"+myModel.getRequestId()+"/color", colorHex);
                                 MyModel model = myModel;
                                 model.setAcceptedById(user.getUid());
                                 model.setAcceptedByName(name);
+                                model.setColor(colorHex);
+                                model.setCount(count);
                                 map.put("AcceptedRequests/"+myModel.getRequestId(), model);
                                 FirebaseDatabase.getInstance().getReference().updateChildren(map);
                                 adapter.notifyItemChanged(position);

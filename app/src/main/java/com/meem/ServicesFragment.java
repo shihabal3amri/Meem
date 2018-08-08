@@ -17,13 +17,17 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
@@ -57,11 +61,28 @@ public class ServicesFragment extends Fragment {
                 }
                 rv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        MyModel mm = arrayList.get(i);
-                        Intent intent = new Intent(getActivity(), BarcodeScannerActivity.class);
-                        intent.putExtra("service", mm);
-                        startActivity(intent);
+                    public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
+                        PermissionListener permissionlistener = new PermissionListener() {
+                            @Override
+                            public void onPermissionGranted() {
+                                MyModel mm = arrayList.get(i);
+                                Intent intent = new Intent(getActivity(), BarcodeScannerActivity.class);
+                                intent.putExtra("service", mm);
+                                startActivity(intent);
+                                //Toast.makeText(getActivity(), "Permission Granted", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                                Toast.makeText(getActivity(), "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+
+                            }
+                        };
+                        TedPermission.with(getActivity())
+                                .setPermissionListener(permissionlistener)
+                                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                                .setPermissions(android.Manifest.permission.CAMERA)
+                                .check();
                     }
                 });
 
